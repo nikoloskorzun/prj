@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+
+    </style>
+</head>
+<body>
+    <h1>
+        Task 2
+    </h1>
+    <p>
+        Come up with an example and implementation of a branching algorithm: 
+    </p>
+        <ol>
+            <li>from everyday life. </li>
+            <li>from a literary work.</li>
+            <li>from any subject area. </li>
+        </ol>
+        <p>task:</p>
+        <ul>
+            <li>Step 1 - Output all the examples.</li>
+            <li>Step 2 - Select one of the examples using a random number sensor and output the selected example.</li>
+            <li>Step 3 - From the selected example, the selected action is selected using the random number sensor.</li>
+    </ul>
+
+   
+        <?php
+
+
+        function print_example($array, $head) 
+        {
+            
+            print $head . "<br>";
+            
+            $result = '';
+            foreach ($array as $key => $value) {
+                $result .= $key . ' - ' . $value . "<br>";
+            }
+        
+            echo trim($result);
+        }
+
+
+        $array_everyday_example = array ('a lot of money' => 'I\'ll buy whatever I need.', 'some cash' => 'I\'ll buy the bare minimum', 'no cash' => 'walk away with nothing.');
+        
+        $array_literary_example = array ('люди "обыкновенные" ("Материал")' => '"Обыкновенные должны жить в послушании и не имеют права переступать закона"', 'люди "необыкновенных" (способные сказать "новое слово")' => '"имеют право делать всякие преступления и всячески преступать закон"');
+        $array_subject_area_example = array('Студент имеет нечетный номер в списке группы' => 'использовать IF (IFELSE)', 'Студент с четным номером' => 'выбрать конструкцию выбор (SWITCH).', 'Николай' => 'использовать конструкцию match');
+        
+        
+        print_example($array_everyday_example, "1. Went to the supermarket");
+        print_example($array_literary_example, "2. Теория Раскольникова");
+        print_example($array_subject_area_example, "3. Выбор конструкции");
+        echo "<br>";
+
+        $choice = rand(1,3);
+
+        match ($choice) 
+        {
+            1 => print_example($array_everyday_example, "1. Went to the supermarket"),
+            2 => print_example($array_literary_example, "2. Теория Раскольникова"),
+            3 => print_example($array_subject_area_example, "3. Выбор конструкции"),
+        };
+
+
+        /*
+        if($choice == 1)
+        {
+            print_example($array_everyday_example, "1. Went to the supermarket");
+        }
+        elseif($choice == 2)
+        {
+            print_example($array_literary_example, "2. Теория Раскольникова");
+
+        }
+        else
+        {
+            print_example($array_subject_area_example, "3. Выбор конструкции");
+
+        }
+        */
+
+
+        $examples = [$array_everyday_example, $array_literary_example, $array_subject_area_example];
+
+        echo "<br>";
+            
+        echo $examples[$choice-1][array_rand($examples[$choice-1])];
+        ?>
+
+
+</body>
+</html>
+

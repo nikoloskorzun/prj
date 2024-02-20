@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .container
+        {
+            display: flex;
+
+            flex-wrap: nowrap;
+            padding:  0;
+            width: 50%; 
+
+        }
+          
+        .block_left 
+        {
+            margin-right: auto;
+                    
+        }
+
+        .block_right 
+        {
+            margin-left: auto;        
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>
+        Task 2
+    </h1>
+ 
+    <h2>Извещение о посылке</h2>
+
+<form id="parcel_notification_form" action="/submit_notification" method="post">
+    <label for="creation_date">Дата создания:</label>
+    <input type="date" id="creation_date" name="creation_date" required>
+    <br><br>
+
+    <fieldset style="width: 50%;">
+        <legend>Персональная информация</legend>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <p>Комментарий:</p>
+        <textarea id="comment" name="comment"></textarea>
+    </fieldset>
+
+    <fieldset style="width: 50%;">
+        <legend>Дополнительная информация</legend>
+        <p>Способы доставки:</p>
+        <input type="checkbox" id="courier" name="delivery_method" value="courier">
+        <label for="courier">Курьер</label>
+        <input type="checkbox" id="airplane" name="delivery_method" value="airplane">
+        <label for="airplane">Самолет</label>
+        <input type="checkbox" id="train" name="delivery_method" value="train">
+        <label for="train">Поезд</label>
+        <input type="checkbox" id="automobile" name="delivery_method" value="automobile">
+        <label for="automobile">Автотранспорт</label>
+        <br><br>
+
+        <label for="form_type">Форма посылки:</label>
+        <select id="form_type" name="form_type">
+            <option value="rectangular">Прямоугольная</option>
+            <option value="round">Круглая</option>
+        </select>
+        <br>
+
+
+        <div class="container">
+            <div class="block_left">
+                <p>Цвет посылки:</p>
+                <input type="color" id="parcel_color" name="parcel_color">
+            </div>
+            
+            <div class="block_right">
+
+                <p>Количество:</p>
+                <input type="number" id="quantity" name="quantity" min="1" max="10">
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="block_left">
+
+                <p>Тара:</p>
+
+                <select id="pack" name="pack" multiple size="4" required>
+                    <option value="Battering">Бьющаяся</option>
+                    <option value="Fragile">Хрупкая</option>
+                    <option value="Waterproof">Водонепроницаемая</option>                    
+                    <option value="Flammable">Пожароопасная</option>
+                </select>
+            </div>
+            <div class="block_right">
+
+                <p>Вес:</p>
+                <input type="radio" id="weight_less_50" name="weight" value="less50" required>
+                <label for="weight_less_50">До  50 кг</label>
+                <br>
+                <input type="radio" id="weight_more_50" name="weight" value="more50" required>
+                <label for="weight_more_50">Больше  50 кг</label>
+            </div>
+        </div>
+        <br>
+        <input type="submit" value="Отправить">
+        <input type="reset" value="Очистить">
+
+</fieldset>
+</form>
+    
+
+
+<div id="result">
+
+</div>
+
+<script>
+    function set_date()
+    {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() +  1).padStart(2, '0'); 
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('creation_date').value = today;
+    }
+
+    set_date();
+
+    document.addEventListener('DOMContentLoaded', function() {
+    let form = document.getElementById('parcel_notification_form');
+    let result_div = document.getElementById('result');
+    form.addEventListener('submit', async function(event) 
+    {
+        result_div.style= "";
+        console.log("submit parcel_notification_form");
+        event.preventDefault(); // Предотвращаем стандартную отправку формы
+
+        let formData = new FormData(form);
+        let o = {};
+
+        let unique = [...new Set(Array.from(formData.keys()))];
+
+        for(let k in unique)
+            {
+            let arr = formData.getAll(unique[k]);
+
+            if(arr.length == 1)
+                o[unique[k]]=formData.get(unique[k]);
+            else
+                o[unique[k]]=formData.getAll(unique[k]);
+               
+            }
+            let json = JSON.stringify(o);
+            console.log(json);
+
+
+       
+        // AJAX запрос для отправки данных формы
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/submit_notification', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function(){
+            if (this.status >=  200 && this.status < 400) 
+            {
+                    
+                result_div.innerHTML = this.responseText;
+                form.reset();
+                form.style="display: none;";
+            } 
+            else 
+            {
+                    console.error('Ошибка при отправке запроса: ' + this.status);
+            }
+        };
+
+        xhr.send("text="+encodeURIComponent(json));
+        
+
+
+
+    });
+});
+
+
+
+function enable_form()
+{
+    document.getElementById('parcel_notification_form').style= "";
+    document.getElementById('result').style= "display: none;";
+    set_date();
+}
+
+</script>
+
+
+
+</body>
+</html>
+

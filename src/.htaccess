@@ -1,0 +1,24 @@
+
+RemoveHandler .html .htm
+AddType application/x-httpd-php .php .htm .html .phtml
+
+
+RewriteEngine On
+RewriteRule ^submit$ lab2/task1/submit.php [L]
+RewriteRule ^translate$ lab2/task1/translate.php [L]
+RewriteRule ^file$ lab2/task1/file_worker.php [L]
+RewriteRule ^submit_notification$ lab2/task2/submit.php [L]
+
+
+
+<IfModule dir_module>
+    DirectoryIndex index.php index.html
+</IfModule>
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .html
+<FilesMatch "\.(html)$">
+   Header set Cache-Control: "no-cache, no-store"
+   Header unset ETag
+</FilesMatch>
+Header set X-Content-Type-Options nosniff
+

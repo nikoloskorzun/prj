@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+    <h1>
+        Task 3
+    </h1>
+    <p>
+        С помощью операторов РНР создайте двумерный ассоциативный массив по предметной области вашей КР и выведите его с
+        помощью оператора цикла (Foreach) и возможностями HTML. Массив должен выводиться в виде таблицы.
+    </p>
+
+
+
+    <?php
+
+    function transform2three_dimensional($products, $criterion) 
+    {
+        $threeDimensionalArray = array();
+        
+        foreach ($products as $product) 
+        {
+            $param = $product[$criterion];
+            
+            if (!isset($threeDimensionalArray[$param])) 
+            {
+                $threeDimensionalArray[$param] = array();
+            }
+            
+            $threeDimensionalArray[$param][] = $product;
+        }
+        
+        return $threeDimensionalArray;
+    }
+
+
+$products = array(
+    array(
+        "id" => "001",
+        "name" => "Молоток",
+        "price" => "1000",
+        "manufacturer" => "denuvo",
+        "supplier_id" => "001"
+    ),
+    array(
+        "id" => "002",
+        "name" => "шуруповерт",
+        "price" => "2000",
+        "manufacturer" => "devalt",
+        "supplier_id" => "001"
+    ),
+    array(
+        "id" => "003",
+        "name" => "гвоздь",
+        "price" => "1",
+        "manufacturer" => "philips",
+        "supplier_id" => "002"
+    )
+);
+
+
+
+echo "<table border='1'>";
+echo "<tr><th>id</th><th>name</th><th>price</th><th>manufacturer</th><th>supplier_id</th></tr>";
+foreach ($products as $product) 
+{
+    echo "<tr>";
+    foreach ($product as $key => $value) 
+    {
+        echo "<td>" . $value . "</td>";
+    }
+    echo "</tr>";
+}
+echo "</table>";
+
+
+
+$columns = array('id', 'name', 'price', 'manufacturer', 'supplier_id');
+
+$param = $columns[array_rand($columns)]; //<--
+
+$three_dimensional_products = transform2three_dimensional($products, $param);
+echo "<br>";
+echo "<table border='1'>";
+unset($columns[array_search($param, $columns)]);
+
+foreach ($three_dimensional_products as $crit => $crit_products) 
+{
+    echo "<thead><tr><th colspan='4'>" . $param . " = " . $crit . "</th></tr></thead>";
+    
+    
+
+    $headerRow = "<tr>";
+    foreach ($columns as $column) 
+    {
+        $headerRow .= "<th>" . $column . "</th>";
+    }
+    $headerRow .= "</tr>";
+    echo $headerRow;
+    
+    
+    foreach ($crit_products as $product) 
+    {
+        echo "<tr>";
+        foreach ($product as $key => $value) 
+        {
+            if($key != $param)
+            echo "<td>" . $value . "</td>";
+        }
+        echo "</tr>";
+    }
+}
+
+
+echo "</table>";
+echo "<br><hr>";
+echo '<pre>';
+print_r($products);
+echo "<br><hr><br>";
+print_r($three_dimensional_products);
+
+echo '</pre>';
+
+
+?>
+
+
+
+</body>
+
+</html>

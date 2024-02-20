@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-apache-php
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+    networks:
+      - my_bridge_network
+    container_name: webserver
+
+
+  api:
+    image: libretranslate/libretranslate
+    ports:
+      - "5000:5000"
+    command: ["--disable-files-translation", "--disable-web-ui", "--load-only", "ru,en"]
+    networks:
+      - my_bridge_network
+    container_name: translator
+
+networks:
+  my_bridge_network:
+

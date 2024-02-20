@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table { margin: auto; }
+    </style>
+
+    
+
+</head>
+<body>
+
+    <h1>
+        Task 1
+    </h1>
+
+    <form id="my_form" method="post" action="/submit">
+        <table>
+            
+            <tr>
+                <td>
+                    <select name="action" id="actionSelect">
+                        <option value="multiplicationTable">Таблица умножения</option>
+                        <option value="oddSum">Подсчет суммы нечетных чисел</option>
+                        <option value="translator">Переводчик</option>
+                    </select>
+                </td>
+
+                <script src="script.js"></script>
+                
+                <td><input type="radio" name="fileAction" value="create" onclick="file_worker(this)">Создать файл</td>
+
+            </tr>
+            
+            <tr>
+
+                <td>  <button type="submit">ok</button></td>
+                <td><input type="radio" name="fileAction" value="add" onclick="file_worker(this)">Добавить в файл</td>
+
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></label><input type="radio" name="fileAction" value="output" onclick="file_worker(this)">Вывести файл</td>
+            </tr>
+        </fieldset>
+            
+        </table>
+    </form>
+
+
+
+    <div id="translator_block" style="display: none;">
+    
+    
+
+        <form id="translator_form"  method="get" action="/translate">
+            <label for="inputText">Введите текст для перевода:</label>
+            <input type="text" id="inputText" name="text" required>
+            <button type="submit">Перевести</button>
+        </form>
+
+        <div id="output"></div>
+
+    </div>
+
+    <div id="result">
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('my_form');
+    var result_div = document.getElementById('result');
+    form.addEventListener('submit', function(event) 
+    {
+        console.log("submit my_form");
+        event.preventDefault(); // Предотвращаем стандартную отправку формы
+
+        var input_value = document.getElementById('actionSelect').value;
+
+
+        if(input_value == "translator")
+        {
+            var elem = document.getElementById('translator_block');
+            elem.style = "";
+            result_div.innerHTML = "";
+        }
+        else
+        {
+            var elem = document.getElementById('translator_block');
+            elem.style = "display: none;";
+            // AJAX запрос для отправки данных формы
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/submit', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                if (this.status >=  200 && this.status < 400) 
+                {
+                    
+                    result_div.innerHTML = this.responseText;
+                } 
+                else 
+                {
+                    console.error('Ошибка при отправке запроса: ' + this.status);
+                }
+            };
+
+            xhr.send('action=' + encodeURIComponent(input_value));
+        }
+    });
+});
+
+</script>
+
+
+
+
+
+<script>
+    
+        document.addEventListener("DOMContentLoaded", function() {
+        // Получаем элементы формы и контейнера для вывода результата
+        var form = document.getElementById("translator_form");
+        var outputContainer = document.getElementById("output");
+        
+        // Функция для обработки отправки формы
+        function handleSubmit(event) {
+            console.log("submit translator_form");
+
+            event.preventDefault(); // Предотвращаем стандартную отправку формы
+    
+            // Собираем данные из формы
+            var textToTranslate = document.getElementById("inputText").value;
+    
+            // Отправляем AJAX-запрос на сервер
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/translate?text=" + encodeURIComponent(textToTranslate), true);
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState ===  4 && xhr.status ===  200) 
+                {
+                    // Если запрос успешно выполнен, записываем результат в контейнер
+                    outputContainer.innerHTML = xhr.responseText;
+                } 
+                else if (xhr.readyState ===  4) 
+                {
+                    // Если произошла ошибка, выводим сообщение об ошибке
+                    outputContainer.innerHTML = "Ошибка при переводе текста";
+                }
+            };
+            xhr.send();
+        }
+    
+        form.addEventListener("submit", handleSubmit);
+
+        //document.getElementById("inputText").addEventListener("input", handleSubmit);
+
+
+    });
+
+</script>
+
+
+
+
+</body>
+</html>

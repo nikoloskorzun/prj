@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: #fefefe;
+            /* Фон страницы */
+            
+        }
+
+        h1 {
+            text-align: left;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: 2px solid black;
+            font-family: Arial;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px 10px;
+        }
+        caption{
+            font-size: 1rem;
+        }
+
+
+        td {
+            text-align: left;
+        }
+
+        .limited-height {
+            display: block;
+            max-height:  100px; 
+            width: auto;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <h1>
+        Task 1
+    </h1>
+
+    <script>
+        (() => {
+            let full_name = prompt("Enter full name", "Фамилия Имя Отчество");
+            let birthdate_and_place = prompt("Enter the date and place of birth", "01.01.2000 place");
+            let height = prompt("Enter your height", "185");
+            let weight = prompt("Enter your weight", "80");
+
+            document.write('<table><caption>Personal data sheet</caption>');
+            document.write('<tr><th scope="title">Surname</th><th scope="title">Name</th><th scope="title">Patronymic</th><th scope="title">Date of birth</th><th scope="title">Place of birth</th></tr>');
+            document.write('<tr><td>' + full_name.split(" ")[0] + '</td><td>' + full_name.split(" ")[1] + '</td><td>' + full_name.split(" ")[2] + '</td><td>' + birthdate_and_place.split(" ")[0] + '</td><td>' + birthdate_and_place.split(" ")[1] + '</td></tr>');
+            document.write('<tr><th scope="title" colspan="5">Additional information</th></tr>');
+            document.write('<tr><td rowspan="2" colspan="3" ><form id="image_input_form"><label for="imageUpload">Choice image:</label><input type="file" id="imageUpload" accept="image/*"></form><img class="limited-height" id="previewImage" alt=""></th><th scope="title">Height</th><td>' + height + '</td></tr>');
+            document.write('<tr><th scope="title">Weight</th><td>' + weight + '</td></tr></table>');
+
+
+
+
+            const imageInput = document.getElementById('imageUpload');
+            const previewImage = document.getElementById('previewImage');
+
+            imageInput.addEventListener('change', function (event) {
+                if (event.target.files && event.target.files[0]) {
+                    let url = URL.createObjectURL(event.target.files[0]);
+                    previewImage.src = url;
+                    let form = document.getElementById('image_input_form');
+                    form.hidden = true;
+                }
+            });
+
+
+        })();
+
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>
