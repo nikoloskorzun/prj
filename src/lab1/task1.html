@@ -50,7 +50,8 @@
     <h1>
         Task 1
     </h1>
-
+    <?php
+    echo <<<'EOT'
     <script>
         (() => {
             let full_name = prompt("Enter full name", "Фамилия Имя Отчество");
@@ -68,14 +69,14 @@
 
 
 
-            const imageInput = document.getElementById('imageUpload');
-            const previewImage = document.getElementById('previewImage');
+            const imageInput = document.getElementById("imageUpload");
+            const previewImage = document.getElementById("previewImage");
 
-            imageInput.addEventListener('change', function (event) {
+            imageInput.addEventListener("change", function (event) {
                 if (event.target.files && event.target.files[0]) {
                     let url = URL.createObjectURL(event.target.files[0]);
                     previewImage.src = url;
-                    let form = document.getElementById('image_input_form');
+                    let form = document.getElementById("image_input_form");
                     form.hidden = true;
                 }
             });
@@ -86,7 +87,8 @@
 
 
     </script>
-
+    EOT;
+?>
 
 
 

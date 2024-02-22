@@ -10,10 +10,10 @@
         text-align: center; 
       }
 
-      A{
+      span{
         text-decoration: none; 
       } 
-      A:hover{ 
+      span:hover{ 
         text-decoration: underline; 
         color: blue;
       }
@@ -27,8 +27,14 @@
         function change_content(url) 
         {
             var frame = parent.document.getElementById('content_frame');
+            if(frame == null)
+            {
+            open('index.html');
+            window.close();}
             frame.src = url;
         }
+
+
     </script>
 </head>
 
@@ -36,20 +42,20 @@
 
 
 <body>
-  <h1><a href="#" onclick="change_content('lab1/lab1.html')">Lab 1</a></h1>
+  <h1><span onclick="change_content('lab1/lab1.html')">Lab 1</span></h1>
 
     <ul>
-        <li><a href="#" onclick="change_content('lab1/task1.html')">task 1</a></li>
-        <li><a href="#" onclick="change_content('lab1/task2.html')">task 2</a></li>
-        <li><a href="#" onclick="change_content('lab1/task3.html')">task 3</a></li>
+        <li><span onclick="change_content('lab1/task1.html')">task 1</span></li>
+        <li><span onclick="change_content('lab1/task2.html')">task 2</span></li>
+        <li><span onclick="change_content('lab1/task3.html')">task 3</span></li>
 
     </ul>
 
 
-    <h1><a href="#" onclick="change_content('lab2/lab2.html')">Lab 2</a></h1>
+    <h1><span  onclick="change_content('lab2/lab2.html')">Lab 2</span></h1>
     <ul>
-      <li><a href="#" onclick="change_content('lab2/task1/task1.html')">task 1</a></li>
-      <li><a href="#" onclick="change_content('lab2/task2/task2.html')">task 2</a></li>
+      <li><span onclick="change_content('lab2/task1/task1.html')">task 1</span></li>
+      <li><span onclick="change_content('lab2/task2/task2.html')">task 2</span></li>
       
 
   </ul>
